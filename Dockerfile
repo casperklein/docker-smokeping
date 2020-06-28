@@ -2,7 +2,7 @@ FROM	debian:10-slim as build
 
 ENV	USER="casperklein"
 ENV	NAME="smokeping"
-ENV	VERSION="0.0.1"
+ENV	VERSION="0.1.0"
 
 ENV	PACKAGES="apache2 smokeping supervisor patch"
 
