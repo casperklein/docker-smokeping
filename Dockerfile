@@ -10,6 +10,7 @@ SHELL	["/bin/bash", "-o", "pipefail", "-c"]
 
 # Install packages
 RUN	apt-get update \
+&&	apt-get -y upgrade \
 &&	apt-get -y --no-install-recommends install $PACKAGES
 
 # Copy root filesystem
