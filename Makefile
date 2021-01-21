@@ -3,9 +3,8 @@
 
 SHELL = /bin/bash
 
-USER := $(shell grep -P 'ENV\s+USER=".+?"' Dockerfile | cut -d'"' -f2)
-NAME := $(shell grep -P 'ENV\s+NAME=".+?"' Dockerfile | cut -d'"' -f2)
-VERSION := $(shell grep -P 'ENV\s+VERSION=".+?"' Dockerfile | cut -d'"' -f2)
+IMAGE := $(shell jq -er '.image' < config.json)
+TAG := $(shell jq -er '"\(.image):\(.version)"' < config.json)
 
 default: build
 
@@ -14,8 +13,8 @@ build:
 
 clean:
 	@echo "Removing Docker images.."
-	docker rmi "$(USER)/$(NAME):$(VERSION)"; \
-	docker rmi "$(USER)/$(NAME):latest"
+	docker rmi "$(TAG)"; \
+	docker rmi "$(IMAGE):latest"
 
 start:
 	@docker-compose up -d
@@ -27,5 +26,5 @@ restart: stop start
 
 push:
 	@echo "Pushing image to Docker Hub.."
-	docker push "$(USER)/$(NAME):$(VERSION)"
-	docker push "$(USER)/$(NAME):latest"
+	docker push "$(TAG)"
+	docker push "$(IMAGE):latest"

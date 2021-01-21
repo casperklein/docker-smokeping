@@ -1,17 +1,14 @@
 FROM	debian:10-slim as build
 
-ENV	USER="casperklein"
-ENV	NAME="smokeping"
-ENV	VERSION="0.1.1"
-
-ENV	PACKAGES="apache2 smokeping supervisor patch"
+ENV	PACKAGES="apache2 smokeping supervisor patch dumb-init"
 
 SHELL	["/bin/bash", "-o", "pipefail", "-c"]
 
 # Upgrade base image and install packages
 RUN	apt-get update \
 &&	apt-get -y upgrade \
-&&	apt-get -y --no-install-recommends install $PACKAGES
+&&	apt-get -y --no-install-recommends install $PACKAGES \
+&&	rm -rf /var/lib/apt/lists/*
 
 # Copy root filesystem
 COPY	rootfs /
@@ -31,9 +28,10 @@ RUN	patch -i /Smokeping.pm.patch /usr/share/perl5/Smokeping.pm
 
 # Build final image
 FROM	scratch
-COPY	--from=build / /
 
 EXPOSE	80
-#HEALTHCHECK --retries=1 CMD bash -c "</dev/tcp/localhost/80"
 
+ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 CMD	["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
+
+COPY	--from=build / /
