@@ -31,7 +31,7 @@ FROM	scratch
 
 EXPOSE	80
 
-ENTRYPOINT ["/usr/bin/dumb-init", "--"]
-CMD	["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
+ENTRYPOINT ["dumb-init", "--"]
+CMD	["supervisord", "-n"]
 
 COPY	--from=build / /
