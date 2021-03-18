@@ -36,9 +36,12 @@ RUN	patch -i /Smokeping.pm.patch /usr/share/perl5/Smokeping.pm
 # Build final image
 FROM	scratch
 
-EXPOSE	80
+ARG	VERSION
+LABEL	Version=$VERSION
 
 ENTRYPOINT ["dumb-init", "--"]
 CMD	["supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
+
+EXPOSE	80
 
 COPY	--from=build / /
