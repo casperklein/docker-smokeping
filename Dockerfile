@@ -10,6 +10,13 @@ RUN	apt-get update \
 &&	apt-get -y --no-install-recommends install $PACKAGES \
 &&	rm -rf /var/lib/apt/lists/*
 
+# Change supervisord defaults
+# Fix for: CRIT Supervisor is running as root. Privileges were not dropped because no user is specified in the config file.
+RUN	sed -i 's|\[supervisord\]|[supervisord]\nuser=root|'				/etc/supervisor/supervisord.conf \
+# Fix for: CRIT Server 'unix_http_server' running without any HTTP authentication checking.
+&&	sed -i 's|\[unix_http_server\]|[unix_http_server]\nusername=foo\npassword=foo|'	/etc/supervisor/supervisord.conf \
+&&	sed -i 's|\[supervisorctl\]|[supervisorctl]\nusername=foo\npassword=foo|'	/etc/supervisor/supervisord.conf
+
 # Copy root filesystem
 COPY	rootfs /
 
@@ -32,6 +39,6 @@ FROM	scratch
 EXPOSE	80
 
 ENTRYPOINT ["dumb-init", "--"]
-CMD	["supervisord", "-n"]
+CMD	["supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
 
 COPY	--from=build / /
