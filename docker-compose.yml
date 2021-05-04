@@ -9,6 +9,6 @@ services:
       - ./config:/config
       - ./data:/data
     ports:
-      - 80:80
+      - "80:80"
     restart: always
     stop_grace_period: 1m
