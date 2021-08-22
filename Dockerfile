@@ -1,6 +1,6 @@
-FROM	debian:10-slim as build
+FROM	debian:11-slim as build
 
-ENV	PACKAGES="apache2 smokeping supervisor patch dumb-init"
+ENV	PACKAGES="apache2 smokeping supervisor dumb-init"
 
 SHELL	["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -29,9 +29,6 @@ RUN	mv /var/lib/smokeping /data	&& ln -s /data /var/lib/smokeping
 
 # Create directory needed for smokeping startup
 RUN	mkdir /var/run/smokeping
-
-# Patch smokeping (got already fixed, but no new release yet --> https://github.com/oetiker/SmokePing/issues/183#issuecomment-533722180)
-RUN	patch -i /Smokeping.pm.patch /usr/share/perl5/Smokeping.pm
 
 # Build final image
 FROM	scratch
