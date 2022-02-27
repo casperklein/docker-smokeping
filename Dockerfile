@@ -1,6 +1,6 @@
 FROM	debian:11-slim as build
 
-ENV	PACKAGES="apache2 smokeping supervisor dumb-init"
+ENV	PACKAGES="apache2 smokeping supervisor dumb-init iputils-ping"
 
 SHELL	["/bin/bash", "-o", "pipefail", "-c"]
 
