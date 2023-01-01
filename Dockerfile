@@ -1,6 +1,6 @@
 FROM	debian:11-slim as build
 
-ENV	PACKAGES="apache2 smokeping supervisor dumb-init iputils-ping"
+ARG	PACKAGES="apache2 smokeping supervisor dumb-init iputils-ping"
 
 SHELL	["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -33,8 +33,12 @@ RUN	mkdir /var/run/smokeping
 # Build final image
 FROM	scratch
 
-ARG	VERSION
-LABEL	Version=$VERSION
+ARG	VERSION="unknown"
+
+LABEL	org.opencontainers.image.description="Yet another containerized smokeping :)"
+LABEL	org.opencontainers.image.source="https://github.com/casperklein/docker-smokeping/"
+LABEL	org.opencontainers.image.title="docker-smokeping"
+LABEL	org.opencontainers.image.version="$VERSION"
 
 ENTRYPOINT ["dumb-init", "--"]
 CMD	["supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
