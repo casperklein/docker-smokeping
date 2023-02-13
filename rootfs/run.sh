@@ -4,6 +4,7 @@ set -ueo pipefail
 
 # directory /etc/smokeping/ empty? copy default config
 if [ -z "$(ls -A /etc/smokeping/)" ]; then
+	echo "Empty /config mount detected. Copying default configuration.."
 	cp -a /etc/.smokeping/* /etc/smokeping/
 fi
 
@@ -11,6 +12,7 @@ fi
 
 # directory /var/lib/smokeping/ empty? copy default data
 if [ -z "$(ls -A /var/lib/smokeping/)" ]; then
+	echo "Empty /data mount detected. Copying default data.."
 	cp -a /var/lib/.smokeping/* /var/lib/smokeping/
 fi
 
