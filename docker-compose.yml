@@ -1,8 +1,6 @@
-version: "2.1"
 services:
   smokeping:
     image: casperklein/smokeping:latest
-    #hostname: 
     container_name: smokeping
     volumes:
       - /etc/localtime:/etc/localtime
