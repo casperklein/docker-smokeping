@@ -17,10 +17,10 @@ clean:
 	docker rmi "$(IMAGE):latest"
 
 start:
-	@docker-compose up -d
+	@docker compose up -d
 
 stop:
-	@docker-compose down
+	@docker compose down
 
 restart: stop start
 
