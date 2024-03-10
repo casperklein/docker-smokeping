@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.4.0
+
+- Base image updated to Debian 12
+
+## 0.3.0
+
+- Build improved
+- Add HTTP redirect from `/` to `/smokeping/`
+
 ## 0.2.0
 
 - Debian 11 base image
