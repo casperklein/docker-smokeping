@@ -1,0 +1,17 @@
+jobs:
+
+  - name: "Initialization"
+    command: "/usr/bin/run.sh || kill -SIGTERM 1"
+    restart: "off"
+    autostart: "on"
+
+  - name: "apache2"
+    command: "/usr/sbin/apache2ctl -D FOREGROUND"
+    logfile: "/var/log/apache2.log"
+    restart: "on"
+    autostart: "on"
+
+  - name: "smokeping"
+    command: "/usr/sbin/smokeping --config=/etc/smokeping/config --nodaemon"
+    restart: "on"
+    autostart: "off"

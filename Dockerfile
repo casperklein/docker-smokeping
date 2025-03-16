@@ -1,41 +1,70 @@
-FROM	debian:12-slim as build
+FROM	debian:12-slim AS build
 
-ARG	PACKAGES="apache2 smokeping supervisor dumb-init iputils-ping"
+ARG	SV_VERSION=0.2
+ARG	YQ_VERSION=v4.45.1
+ARG	PACKAGES="apache2 smokeping dumb-init iputils-ping curl"
+ARG	TARGETARCH
 
-SHELL	["/bin/bash", "-o", "pipefail", "-c"]
+SHELL	["/bin/bash", "-e", "-o", "pipefail", "-c"]
 
 # Upgrade base image and install packages
-RUN	apt-get update \
-&&	apt-get -y upgrade \
-&&	apt-get -y --no-install-recommends install $PACKAGES \
-&&	rm -rf /var/lib/apt/lists/*
+RUN <<EOF
+	apt-get update
+	apt-get -y upgrade
+	apt-get -y --no-install-recommends install $PACKAGES
+	rm -rf /var/lib/apt/lists/*
+EOF
 
 # Copy root filesystem
 COPY	rootfs /
 
-# Change supervisord defaults
-# Fix for: CRIT Supervisor is running as root. Privileges were not dropped because no user is specified in the config file.
-RUN	sedfile -i 's|\[supervisord\]|[supervisord]\nuser=root|'                            /etc/supervisor/supervisord.conf \
-# Fix for: CRIT Server 'unix_http_server' running without any HTTP authentication checking.
-&&	sedfile -i 's|\[unix_http_server\]|[unix_http_server]\nusername=foo\npassword=foo|' /etc/supervisor/supervisord.conf \
-&&	sedfile -i 's|\[supervisorctl\]|[supervisorctl]\nusername=foo\npassword=foo|'       /etc/supervisor/supervisord.conf
+# Install yq
+RUN <<EOF
+	curl -sSLf -o /usr/bin/yq "https://github.com/mikefarah/yq/releases/download/$YQ_VERSION/yq_linux_$TARGETARCH"
+	chmod +x /usr/bin/yq
+
+	# Test binary
+	yq --version
+EOF
+
+# Install supervisor.sh
+RUN <<EOF
+	curl -sSLf -o /usr/bin/supervisor.sh "https://raw.githubusercontent.com/casperklein/supervisor.sh/refs/tags/$SV_VERSION/supervisor.sh"
+	chmod +x /usr/bin/supervisor.sh
+	supervisor.sh --config /etc/supervisor.yaml convert
+EOF
 
 # Redirect / to /smokeping/
-RUN	a2enmod rewrite \
-&&	sedfile -i 's|</VirtualHost>|RewriteEngine On\nRewriteRule ^/$ /smokeping/ [R=301]\n</VirtualHost>|' /etc/apache2/sites-available/000-default.conf
-
-RUN	rm /bin/sedfile
+RUN <<EOF
+	a2enmod rewrite
+	sedfile -i 's|</VirtualHost>|RewriteEngine On\nRewriteRule ^/$ /smokeping/ [R=301]\n</VirtualHost>|' /etc/apache2/sites-available/000-default.conf
+EOF
 
 # Backup default config
-RUN	cp -a /etc/smokeping /etc/.smokeping
-RUN	cp -a /var/lib/smokeping /var/lib/.smokeping
+RUN <<EOF
+	cp -a /etc/smokeping /etc/.smokeping
+	cp -a /var/lib/smokeping /var/lib/.smokeping
+EOF
 
-# Move directorys
-RUN	mv /etc/smokeping /config	&& ln -s /config /etc/smokeping
-RUN	mv /var/lib/smokeping /data	&& ln -s /data /var/lib/smokeping
+# Move directories
+RUN <<EOF
+	mv /etc/smokeping     /config
+	mv /var/lib/smokeping /data
 
-# Create directory needed for smokeping startup
+	ln -s /config /etc/smokeping
+	ln -s /data   /var/lib/smokeping
+EOF
+
+# Needed for smokeping startup
 RUN	mkdir /var/run/smokeping
+
+# Clean up
+RUN <<EOF
+	apt-get -y purge curl
+	apt-get -y autoremove
+
+	rm /usr/bin/sedfile /usr/bin/yq
+EOF
 
 # Build final image
 FROM	scratch
@@ -47,8 +76,8 @@ LABEL	org.opencontainers.image.source="https://github.com/casperklein/docker-smo
 LABEL	org.opencontainers.image.title="docker-smokeping"
 LABEL	org.opencontainers.image.version="$VERSION"
 
-ENTRYPOINT ["dumb-init", "--"]
-CMD	["supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
+ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+CMD	["/usr/bin/supervisor.sh", "--config", "/etc/supervisor.yaml.sh"]
 
 EXPOSE	80
 

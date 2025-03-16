@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0
+
+- New supervisor
+- Image size reduced
+- Dockerfile updated
+
 ## 0.4.0
 
 - Base image updated to Debian 12
