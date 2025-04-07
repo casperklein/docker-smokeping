@@ -1,5 +1,7 @@
-jobs:
+supervisor:
+  sigterm_grace_period: 60
 
+jobs:
   - name: "Initialization"
     command: "/usr/bin/run.sh || kill -SIGTERM 1"
     restart: "off"
