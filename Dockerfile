@@ -58,6 +58,12 @@ EOF
 # Needed for smokeping startup
 RUN	mkdir /var/run/smokeping
 
+# Disable access logging
+RUN <<EOF
+	a2disconf other-vhosts-access-log
+	sedfile -i 's|^\s*CustomLog|#&|' /etc/apache2/sites-enabled/000-default.conf
+EOF
+
 # Clean up
 RUN <<EOF
 	apt-get -y purge curl
