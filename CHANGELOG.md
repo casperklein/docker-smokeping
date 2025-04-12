@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.1
+
+- `supervisor.sh` updated
+
+## 0.6.0
+
+- Access logging disabled
+- `supvervisor.sh` SIGTERM grace period added
+
 ## 0.5.0
 
 - New supervisor
