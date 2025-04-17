@@ -3,8 +3,8 @@ services:
     image: casperklein/smokeping:latest
     container_name: smokeping
     volumes:
-      - /etc/localtime:/etc/localtime
-      - ./config:/config
+      - /etc/localtime:/etc/localtime:ro
+      - ./config:/config:ro
       - ./data:/data
     ports:
       - "80:80"
