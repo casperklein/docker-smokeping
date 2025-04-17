@@ -32,6 +32,10 @@ RUN <<EOF
 	curl -sSLf -o /usr/bin/supervisor.sh "https://raw.githubusercontent.com/casperklein/supervisor.sh/refs/tags/$SV_VERSION/supervisor.sh"
 	chmod +x /usr/bin/supervisor.sh
 	supervisor.sh --config /etc/supervisor.yaml convert
+
+	mkdir -p /etc/bash_completion.d
+	curl -sSLf -o /etc/bash_completion.d/supervisor-completion.bash "https://raw.githubusercontent.com/casperklein/supervisor.sh/refs/tags/$SV_VERSION/supervisor-completion.bash"
+	echo "source /etc/bash_completion.d/supervisor-completion.bash" >> /etc/bash.bashrc
 EOF
 
 # Redirect / to /smokeping/
