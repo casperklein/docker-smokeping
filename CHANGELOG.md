@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.2
+
+- `docker-compose.yml`: mount some volumes read-only
+- `supervisor.sh` completion added
+
 ## 0.6.1
 
 - `supervisor.sh` updated
