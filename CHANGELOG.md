@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.3
+
+- `supervisor.sh` and `yq` updated
+
 ## 0.6.2
 
 - `docker-compose.yml`: mount some volumes read-only
