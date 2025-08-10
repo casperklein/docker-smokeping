@@ -1,7 +1,7 @@
 FROM	debian:12-slim AS build
 
-ARG	SV_VERSION=0.4
-ARG	YQ_VERSION=v4.45.4
+ARG	SV_VERSION=0.5
+ARG	YQ_VERSION=v4.47.1
 ARG	PACKAGES="apache2 smokeping dumb-init iputils-ping curl"
 ARG	TARGETARCH
 
