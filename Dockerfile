@@ -1,4 +1,4 @@
-FROM	debian:12-slim AS build
+FROM	debian:13-slim AS build
 
 ARG	SV_VERSION=0.5
 ARG	YQ_VERSION=v4.47.1

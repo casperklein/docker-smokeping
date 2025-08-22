@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.7.0
+
+- Debian 13 base image
+- [Smokeping 2.8.2](https://oss.oetiker.ch/smokeping/pub/CHANGES)
+
 ## 0.6.3
 
 - `supervisor.sh` and `yq` updated
