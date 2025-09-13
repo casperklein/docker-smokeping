@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.1
+
+- yq updated
+
 ## 0.7.0
 
 - Debian 13 base image
