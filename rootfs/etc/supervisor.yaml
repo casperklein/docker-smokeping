@@ -15,5 +15,6 @@ jobs:
 
   - name: "smokeping"
     command: "/usr/sbin/smokeping --config=/etc/smokeping/config --nodaemon"
-    restart: "on"
+    restart: "off"
+    required: "yes"
     autostart: "off"

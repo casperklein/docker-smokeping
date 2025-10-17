@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.8.0
+
+- [supervisor.sh 0.8](https://github.com/casperklein/supervisor.sh/releases/tag/0.8)
+- The container now stops, when Smokeping should ever crash.
+
 ## 0.7.1
 
 - yq updated
@@ -50,7 +55,6 @@
 ## 0.1.1
 
 - improvements & bugfixes
-
 
 ## 0.1.0
 
