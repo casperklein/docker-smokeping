@@ -17,4 +17,4 @@ if [ -z "$(ls -A /var/lib/smokeping/)" ]; then
 fi
 
 # start smokeping
-supervisor.sh --config /etc/supervisor.yaml.sh start smokeping
+exec supervisor.sh --config /etc/supervisor.yaml.sh start smokeping > /dev/null

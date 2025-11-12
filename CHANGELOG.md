@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.0
+
+- [supervisor.sh 0.10](https://github.com/casperklein/supervisor.sh/releases/tag/0.10)
+
 ## 0.8.0
 
 - [supervisor.sh 0.8](https://github.com/casperklein/supervisor.sh/releases/tag/0.8)
