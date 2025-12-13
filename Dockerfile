@@ -1,11 +1,11 @@
 FROM	debian:13-slim AS build
 
-ARG	SV_VERSION=0.10
-ARG	YQ_VERSION=v4.48.1
+ARG	SV_VERSION=0.12
+ARG	YQ_VERSION=v4.49.1
 ARG	PACKAGES="apache2 smokeping dumb-init iputils-ping curl"
 ARG	TARGETARCH
 
-SHELL	["/bin/bash", "-e", "-o", "pipefail", "-c"]
+SHELL	["/bin/bash", "-e", "-c"]
 
 # Upgrade base image and install packages
 RUN <<EOF
