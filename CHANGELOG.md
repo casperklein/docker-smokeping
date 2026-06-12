@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.13
+
+- `supervisor.sh` and `yq` updated
+
 ## 0.12
 
 - [supervisor.sh 0.14](https://github.com/casperklein/supervisor.sh/releases/tag/0.14)
